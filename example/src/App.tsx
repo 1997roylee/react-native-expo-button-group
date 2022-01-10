@@ -48,7 +48,7 @@ export default function App() {
 
   return (
     <SafeAreaView>
-      <Text>{Array.isArray(value)? value.join(','): value}</Text>
+      <Text>{Array.isArray(value) ? value.join(',') : value}</Text>
       <ButtonGroup
         data={data}
         ItemComponent={Item}
@@ -57,6 +57,18 @@ export default function App() {
         defaultValue={value}
         method={useMultiple}
         supportReset={true}
+        horizontal={true}
+      />
+      <ButtonGroup
+        data={data}
+        ItemComponent={Item}
+        valueAttribute="id"
+        onChange={handleChange}
+        defaultValue={value}
+        method={useMultiple}
+        supportReset={true}
+        horizontal={false}
+        numColumns={2}
       />
     </SafeAreaView>
   );

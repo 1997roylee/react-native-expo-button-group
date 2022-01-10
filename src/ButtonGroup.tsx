@@ -15,6 +15,8 @@ interface IButtonGroupProps {
   method: useMultiple | useSingle;
   supportReset?: boolean;
   resetLabel?: string;
+  horizontal?: boolean;
+  numColumns?: number;
 }
 
 function ButtonGroup(props: IButtonGroupProps) {
@@ -24,10 +26,12 @@ function ButtonGroup(props: IButtonGroupProps) {
     onChange,
     method,
     defaultValue,
+    horizontal = false,
     valueAttribute = 'value',
     labelAttribute = 'label',
     supportReset = false,
     resetLabel = 'Reset',
+    numColumns = 1,
   } = props;
 
   const {
@@ -67,6 +71,8 @@ function ButtonGroup(props: IButtonGroupProps) {
   return (
     <FlatList
       data={newData}
+      horizontal={horizontal}
+      numColumns={horizontal ? undefined : numColumns}
       keyExtractor={(_, index: number) => `ButtonGroupItem-${index}`}
       renderItem={renderItem}
     />

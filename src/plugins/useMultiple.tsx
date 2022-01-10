@@ -1,6 +1,6 @@
 // src/plugins/useMultiple.tsx
 
-import { useState, useCallback } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 import xor from 'lodash/xor';
 import without from 'lodash/without';
 
@@ -32,16 +32,24 @@ function useMultiple(props: IProps) {
     resetLabel,
   } = props;
 
-  const mappedData = data.map((item: any) => ({
-    value: item[valueAttribute],
-    label: item[labelAttribute],
-  }));
+  const mappedData = useMemo(
+    () => {
+      const newData = data.map((item: any) => ({
+        value: item[valueAttribute],
+        label: item[labelAttribute],
+      }));
 
-  if (supportReset)
-    mappedData.unshift({
-      value: -1,
-      label: resetLabel,
-    });
+      if (supportReset)
+        newData.unshift({
+          value: -1,
+          label: resetLabel,
+        });
+
+      return newData;
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [data]
+  );
 
   const index =
     defaultValue?.filter((item: any) => {
