@@ -1,0 +1,22 @@
+{
+  "name": "react-native-expo-button-group-example",
+  "displayName": "ExpoButtonGroup Example",
+  "expo": {
+    "name": "react-native-expo-button-group-example",
+    "slug": "react-native-expo-button-group-example",
+    "description": "Example app for react-native-expo-button-group",
+    "privacy": "public",
+    "version": "1.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
