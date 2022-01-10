@@ -1,3 +1,8 @@
-export function multiply(a: number, b: number): Promise<number> {
-  return Promise.resolve(a * b);
-}
+// src/index.tsx
+
+import ButtonGroup from './ButtonGroup';
+import { useSingle, useMultiple } from './plugins';
+
+export default ButtonGroup;
+
+export { useSingle, useMultiple };
