@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { useCallback } from 'react';
-
+import { useCallback, Profiler } from 'react';
 import {
   StyleSheet,
   View,
@@ -8,7 +7,11 @@ import {
   TouchableWithoutFeedback,
   SafeAreaView,
 } from 'react-native';
-import ButtonGroup, { useSingle, useMultiple } from '../../src/index';
+import ButtonGroup, {
+  asButtonGroupChild,
+  useSingle,
+  useMultiple,
+} from '../../src/index';
 
 const mockData = (size: number) => {
   const data = [];
@@ -21,10 +24,11 @@ const mockData = (size: number) => {
   return data;
 };
 
-const data = mockData(10);
+const data = mockData(100);
 
-function Item(props) {
-  const { isSelected, label, onPress } = props;
+const Item = asButtonGroupChild((props) => {
+  const { isSelected, item, onPress } = props;
+  const { label } = item;
 
   return (
     <TouchableWithoutFeedback onPress={onPress}>
@@ -33,7 +37,7 @@ function Item(props) {
       </View>
     </TouchableWithoutFeedback>
   );
-}
+});
 
 export default function App() {
   // For single selection:
@@ -46,30 +50,62 @@ export default function App() {
     setValue(selectedValue);
   }, []);
 
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setValue([1, 2, 3, 4, 5, 6, 7, 8]);
+  //   }, 1000);
+  // }, []);
+
+  const onRenderCallback = (
+    id, // the "id" prop of the Profiler tree that has just committed
+    phase, // either "mount" (if the tree just mounted) or "update" (if it re-rendered)
+    actualDuration, // time spent rendering the committed update
+    baseDuration, // estimated time to render the entire subtree without memoization
+    startTime, // when React began rendering this update
+    commitTime, // when React committed this update
+    interactions // the Set of interactions belonging to this update
+  ) => {
+    console.log(
+      id,
+      phase,
+      actualDuration,
+      baseDuration,
+      startTime,
+      commitTime,
+      interactions
+    );
+  };
+
   return (
     <SafeAreaView>
       <Text>{Array.isArray(value) ? value.join(',') : value}</Text>
-      <ButtonGroup
-        data={data}
-        ItemComponent={Item}
-        valueAttribute="id"
-        onChange={handleChange}
-        defaultValue={value}
-        method={useMultiple}
-        supportReset={true}
-        horizontal={true}
-      />
-      <ButtonGroup
-        data={data}
-        ItemComponent={Item}
-        valueAttribute="id"
-        onChange={handleChange}
-        defaultValue={value}
-        method={useMultiple}
-        supportReset={true}
-        horizontal={false}
-        numColumns={2}
-      />
+      <Profiler id="MapMultipleButtonGroup" onRender={onRenderCallback}>
+        <ButtonGroup
+          data={data}
+          ItemComponent={Item}
+          valueAttribute="id"
+          onChange={handleChange}
+          defaultValue={value}
+          method={useMultiple}
+          supportReset={true}
+          horizontal={true}
+          numColumns={2}
+        />
+      </Profiler>
+      <Profiler id="FlatMultipleButtonGroup" onRender={onRenderCallback}>
+        <ButtonGroup
+          data={data}
+          ItemComponent={Item}
+          valueAttribute="id"
+          defaultValue={value}
+          method={useMultiple}
+          onChange={handleChange}
+          supportReset={true}
+          horizontal={true}
+          numColumns={2}
+          as="FlatList"
+        />
+      </Profiler>
     </SafeAreaView>
   );
 }

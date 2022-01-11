@@ -1,8 +1,9 @@
 // src/plugins/useMultiple.tsx
 
 import { useMemo, useState, useCallback } from 'react';
-import xor from 'lodash/xor';
+// import xor from 'lodash/xor';
 import without from 'lodash/without';
+import { xor } from '../utils';
 
 interface IProps {
   data: any[];
@@ -60,19 +61,25 @@ function useMultiple(props: IProps) {
 
   const [currentIndex, setCurrentIndex] = useState<number[]>(index as number[]);
 
+  // eslint-disable-next-line no-shadow
   const onPress = (index: number, value: any) => {
+    const startTime = (global as any).performance.now();
     if (supportReset && value === -1) {
-      setSelectedValue([]);
       setCurrentIndex([0]);
       onChange([], [0]);
+      setSelectedValue([]);
     } else {
-      const newIndex = without(xor(currentIndex, [index]), 0);
+      const newIndex = supportReset
+        ? without(xor(currentIndex, index), 0)
+        : xor(currentIndex, index);
       const newValue = newIndex.map((i: number) => mappedData[i].value);
-
       setCurrentIndex(newIndex);
-      setSelectedValue(newValue);
       onChange(newValue, newIndex);
+      setSelectedValue(newValue);
     }
+    console.log(
+      `useMultiple: ${(global as any).performance.now() - startTime}ms`
+    );
   };
 
   return {
@@ -80,7 +87,7 @@ function useMultiple(props: IProps) {
     currentIndex,
     value: selectedValue,
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    onPress: useCallback(onPress, [currentIndex, selectedValue]),
+    onPress: useCallback(onPress, [currentIndex]),
   };
 }
 
