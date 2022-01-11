@@ -50,12 +50,6 @@ export default function App() {
     setValue(selectedValue);
   }, []);
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setValue([1, 2, 3, 4, 5, 6, 7, 8]);
-  //   }, 1000);
-  // }, []);
-
   const onRenderCallback = (
     id, // the "id" prop of the Profiler tree that has just committed
     phase, // either "mount" (if the tree just mounted) or "update" (if it re-rendered)
