@@ -41,8 +41,9 @@ const data = mockData(100);
 
 const Item = asButtonGroupChild((props) => {
   const { isSelected, item, onPress } = props;
-  const { label } = item;
+  const { label, origin } = item;
 
+  console.log(origin);
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={[styles.btn, isSelected ? styles.active : styles.inactive]}>
@@ -86,7 +87,7 @@ export default function App() {
   return (
     <SafeAreaView>
       <Text>{Array.isArray(value) ? value.join(',') : value}</Text>
-      <Profiler id="MapMultipleButtonGroup" onRender={onRenderCallback}>
+      <Profiler id="MultipleButtonGroup" onRender={onRenderCallback}>
         <ButtonGroup
           data={data}
           ItemComponent={Item}
@@ -97,20 +98,6 @@ export default function App() {
           supportReset={true}
           horizontal={true}
           numColumns={2}
-        />
-      </Profiler>
-      <Profiler id="FlatMultipleButtonGroup" onRender={onRenderCallback}>
-        <ButtonGroup
-          data={data}
-          ItemComponent={Item}
-          valueAttribute="id"
-          defaultValue={value}
-          method={useMultiple}
-          onChange={handleChange}
-          supportReset={true}
-          horizontal={true}
-          numColumns={2}
-          as="FlatList"
         />
       </Profiler>
     </SafeAreaView>
