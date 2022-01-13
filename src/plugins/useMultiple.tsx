@@ -38,12 +38,14 @@ function useMultiple(props: IProps) {
       const newData = data.map((item: any) => ({
         value: item[valueAttribute],
         label: item[labelAttribute],
+        origin: item,
       }));
 
       if (supportReset)
         newData.unshift({
           value: -1,
           label: resetLabel,
+          origin: null,
         });
 
       return newData;
@@ -63,7 +65,7 @@ function useMultiple(props: IProps) {
 
   // eslint-disable-next-line no-shadow
   const onPress = (index: number, value: any) => {
-    const startTime = (global as any).performance.now();
+    // const startTime = (global as any).performance.now();
     if (supportReset && value === -1) {
       setCurrentIndex([0]);
       onChange([], [0]);
@@ -77,9 +79,9 @@ function useMultiple(props: IProps) {
       onChange(newValue, newIndex);
       setSelectedValue(newValue);
     }
-    console.log(
-      `useMultiple: ${(global as any).performance.now() - startTime}ms`
-    );
+    // console.log(
+    //   `useMultiple: ${(global as any).performance.now() - startTime}ms`
+    // );
   };
 
   return {

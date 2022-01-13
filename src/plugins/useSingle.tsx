@@ -24,6 +24,7 @@ export default function useSingle(props: IProps) {
   const mappedData = data.map((item: any) => ({
     value: item[valueAttribute],
     label: item[labelAttribute],
+    origin: item,
   }));
 
   const index = defaultValue
