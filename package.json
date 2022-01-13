@@ -1,6 +1,6 @@
 {
   "name": "react-native-expo-button-group",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "button group",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
