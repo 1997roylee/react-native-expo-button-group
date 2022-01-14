@@ -55,11 +55,15 @@ function useMultiple(props: IProps) {
   );
 
   const index =
-    defaultValue?.reduce((sum: number[], item: any) => {
-      const i: number = mappedData.findIndex((row: any) => row.value === item);
-      if (i > -1) sum.push(i);
-      return sum;
-    }, []) || [];
+    defaultValue && Array.isArray(defaultValue)
+      ? defaultValue?.reduce((sum: number[], item: any) => {
+          const i: number = mappedData.findIndex(
+            (row: any) => row.value === item
+          );
+          if (i > -1) sum.push(i);
+          return sum;
+        }, []) || []
+      : [];
 
   const [selectedValue, setSelectedValue] = useState<string[]>([]);
 
